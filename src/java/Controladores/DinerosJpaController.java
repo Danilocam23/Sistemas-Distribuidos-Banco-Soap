@@ -66,11 +66,11 @@ public class DinerosJpaController implements Serializable {
         }
     }
 
-    public void edit(Dineros dineros) throws NonexistentEntityException, RollbackFailureException, Exception {
+     public void edit(Dineros dineros) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             Dineros persistentDineros = em.find(Dineros.class, dineros.getIDDinero());
             Cuentas IDCuentasOld = persistentDineros.getIDCuentas();
             Cuentas IDCuentasNew = dineros.getIDCuentas();
@@ -87,13 +87,8 @@ public class DinerosJpaController implements Serializable {
                 IDCuentasNew.getDinerosList().add(dineros);
                 IDCuentasNew = em.merge(IDCuentasNew);
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
-            try {
-                utx.rollback();
-            } catch (Exception re) {
-                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-            }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = dineros.getIDDinero();
