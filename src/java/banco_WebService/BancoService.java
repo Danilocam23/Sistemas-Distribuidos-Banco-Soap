@@ -5,6 +5,7 @@
  */
 package banco_WebService;
 
+import WebServices_DB.OperacionesDB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -23,7 +24,9 @@ public class BancoService {
     
     @WebMethod(operationName = "Transacion_Soap")
     public String Transacion_Soap(@WebParam(name = "cuenta") String cuenta, @WebParam(name = "dinero") int dinero) {
+        OperacionesDB odb = new OperacionesDB();
+        
         //TODO write your implementation code here:
-        return cuenta;
+        return odb.Transacion(cuenta, dinero);
     }
 }

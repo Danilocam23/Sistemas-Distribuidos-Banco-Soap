@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.transaction.UserTransaction;
 
 /**
@@ -28,9 +29,8 @@ import javax.transaction.UserTransaction;
  */
 public class CuentasJpaController implements Serializable {
 
-    public CuentasJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
+    public CuentasJpaController() {
+       this.emf = Persistence.createEntityManagerFactory("Banco_SocketPU");
     }
     private UserTransaction utx = null;
     private EntityManagerFactory emf = null;
@@ -250,6 +250,16 @@ public class CuentasJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    public int IdCuentas(String cuenta) {
+
+        EntityManager em = getEntityManager();
+
+        Query query = em.createNamedQuery("Cuentas.findByNumerocuenta");
+        query.setParameter("numerocuenta", cuenta);
+        Cuentas c = (Cuentas) query.getSingleResult();
+        int idCuenta = c.getIDCuentas();
+        return idCuenta;
     }
     
 }

@@ -17,6 +17,7 @@ import Entidades.Dineros;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.transaction.UserTransaction;
 
 /**
@@ -25,9 +26,8 @@ import javax.transaction.UserTransaction;
  */
 public class DinerosJpaController implements Serializable {
 
-    public DinerosJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
+    public DinerosJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("Banco_SocketPU");
     }
     private UserTransaction utx = null;
     private EntityManagerFactory emf = null;
@@ -186,6 +186,14 @@ public class DinerosJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+     public List<Dineros> GetIdDinero() {
+
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Dineros.findAll");
+        List<Dineros> c = query.getResultList();
+        return c;
+
     }
     
 }

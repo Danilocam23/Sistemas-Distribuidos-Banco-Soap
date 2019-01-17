@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.transaction.UserTransaction;
 
 /**
@@ -27,9 +28,8 @@ import javax.transaction.UserTransaction;
  */
 public class UsuariosJpaController implements Serializable {
 
-    public UsuariosJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
+    public UsuariosJpaController() {
+       this.emf = Persistence.createEntityManagerFactory("Banco_SocketPU");
     }
     private UserTransaction utx = null;
     private EntityManagerFactory emf = null;
